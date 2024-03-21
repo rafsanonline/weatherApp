@@ -8,11 +8,6 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 abstract class BaseActivity : AppCompatActivity() {
 
-    override
-    fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
         viewRelatedTask()

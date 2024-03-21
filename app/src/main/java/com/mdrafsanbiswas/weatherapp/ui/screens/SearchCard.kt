@@ -26,17 +26,19 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.mdrafsanbiswas.weatherapp.R
 import com.mdrafsanbiswas.weatherapp.ui.theme.Snow
 import com.mdrafsanbiswas.weatherapp.ui.theme.Violet
 import com.mdrafsanbiswas.weatherapp.ui.theme.poppins
 
 @Composable
-fun SearchCard(onSearchClick: () -> Unit) {
+fun SearchCard(onSearchClick: (String) -> Unit) {
 
     var searchText by remember {
         mutableStateOf("")
@@ -45,7 +47,8 @@ fun SearchCard(onSearchClick: () -> Unit) {
     Row(
         Modifier
             .fillMaxWidth()
-            .padding(top = 10.dp)) {
+            .padding(top = 10.dp)
+    ) {
         Box(
             modifier = Modifier
                 .height(55.dp)
@@ -61,10 +64,10 @@ fun SearchCard(onSearchClick: () -> Unit) {
                     .align(Alignment.Center),
                 placeholder = {
                     Text(
-                        text = "Search by city, country",
+                        text = stringResource(R.string.search_by_city_country),
                         fontFamily = poppins,
                         fontSize = 15.sp,
-                        fontWeight = FontWeight.Medium,
+                        fontWeight = FontWeight.Light,
                     )
                 },
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
@@ -93,7 +96,7 @@ fun SearchCard(onSearchClick: () -> Unit) {
                 .padding(10.dp)
                 .align(Alignment.CenterVertically)
                 .clickable {
-                    onSearchClick()
+                    onSearchClick(searchText)
                 }
         )
     }

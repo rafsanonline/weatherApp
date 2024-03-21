@@ -1,5 +1,6 @@
 package com.mdrafsanbiswas.weatherapp.network
 
+import android.util.Log
 import com.google.gson.GsonBuilder
 import com.mdrafsanbiswas.weatherapp.network.data.BaseResponse
 import okhttp3.ResponseBody
@@ -56,6 +57,7 @@ open class NetworkErrorExceptions(
 }
 
 fun Exception.resolveError(): AppNetworkState.Error {
+    Log.d("check_exception", "${this.message}")
     when (this) {
         is SocketTimeoutException -> {
             val exception = NetworkErrorExceptions(errorMessage = "connection error!")
@@ -99,7 +101,7 @@ fun Exception.resolveError(): AppNetworkState.Error {
     }
 
     return AppNetworkState.Error(
-        exception = NetworkErrorExceptions(errorMessage = "Something went wrong!"),
+        exception = NetworkErrorExceptions(errorMessage = this.message.toString()),
         errorBody = null,
         unauthorized = false
     )

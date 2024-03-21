@@ -94,10 +94,12 @@ fun Int?.formatDate(): String {
 fun Date.getDayOfMonthSuffix(n: Int): String {
     return when {
         n in 11..13 -> "th"
-        n % 10 == 1 -> "st"
-        n % 10 == 2 -> "nd"
-        n % 10 == 3 -> "rd"
-        else -> "th"
+        else -> when (n % 10) {
+            1 -> "st"
+            2 -> "nd"
+            3 -> "rd"
+            else -> "th"
+        }
     }
 }
 

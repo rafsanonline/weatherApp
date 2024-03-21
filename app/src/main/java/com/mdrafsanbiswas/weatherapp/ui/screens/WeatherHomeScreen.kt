@@ -1,8 +1,5 @@
 package com.mdrafsanbiswas.weatherapp.ui.screens
 
-import android.util.Log
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,17 +13,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.WaterDrop
 import androidx.compose.material.icons.rounded.WbCloudy
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -45,16 +37,16 @@ import com.mdrafsanbiswas.weatherapp.ui.theme.Violet
 import com.mdrafsanbiswas.weatherapp.ui.theme.poppins
 import com.mdrafsanbiswas.weatherapp.util.formatDate
 import com.mdrafsanbiswas.weatherapp.util.formatDateAMPM
-import com.skydoves.landscapist.ShimmerParams
 import com.skydoves.landscapist.coil.CoilImage
+import kotlinx.coroutines.launch
 
 @Composable
 fun WeatherHomeScreen(
     viewModel: MainViewModel
 ) {
-    LaunchedEffect(key1 = Unit, block = {
-        viewModel.fetchWeatherData("23", "90")
-    })
+
+    val coroutineScope = rememberCoroutineScope()
+    ProgressBarHandler(show = viewModel.showProgressBar)
 
     Column(
         modifier = Modifier
@@ -64,30 +56,18 @@ fun WeatherHomeScreen(
     ) {
         SearchCard(
             onSearchClick = {
-
+                coroutineScope.launch {
+                    viewModel.fetchWeatherDataByCity(it)
+                }
             }
         )
 
-        if(viewModel.weatherData != null) {
+        if (viewModel.weatherData != null) {
             Spacer(modifier = Modifier.height(45.dp))
             TemperatureDetails(viewModel)
             Spacer(modifier = Modifier.height(10.dp))
             TemperatureCard(viewModel)
-
-            Text(
-                text = viewModel.weatherData?.weather?.get(0)?.main?:"",
-                fontFamily = poppins,
-                fontWeight = FontWeight.Normal,
-                color = Violet,
-                fontSize = 17.sp,
-                modifier = Modifier.align(Alignment.CenterHorizontally)
-            )
-
-            Spacer(modifier = Modifier.height(30.dp))
-
             OtherDetails(viewModel)
-        } else {
-            ProgressBarHandler(viewModel.showProgressBar)
         }
     }
 }
@@ -95,6 +75,15 @@ fun WeatherHomeScreen(
 @Composable
 fun OtherDetails(viewModel: MainViewModel) {
     Column(modifier = Modifier.fillMaxWidth()) {
+        Text(
+            text = viewModel.weatherData?.weather?.get(0)?.main ?: "",
+            fontFamily = poppins,
+            fontWeight = FontWeight.Normal,
+            color = Violet,
+            fontSize = 17.sp,
+            modifier = Modifier.align(Alignment.CenterHorizontally)
+        )
+        Spacer(modifier = Modifier.height(30.dp))
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -254,7 +243,7 @@ fun TemperatureDetails(viewModel: MainViewModel) {
     val data = viewModel.weatherData
     Column(modifier = Modifier.fillMaxWidth()) {
         Text(
-            text = data?.dt?.formatDate()?:"",
+            text = data?.dt?.formatDate() ?: "",
             fontFamily = poppins,
             fontSize = 20.sp,
             color = Violet,
@@ -263,7 +252,7 @@ fun TemperatureDetails(viewModel: MainViewModel) {
         )
 
         Text(
-            text = data?.name?:"",
+            text = data?.name ?: "",
             fontFamily = poppins,
             fontSize = 16.sp,
             color = Violet,
@@ -280,16 +269,18 @@ fun TemperatureCard(viewModel: MainViewModel) {
             .padding(start = 20.dp), horizontalArrangement = Arrangement.Center
     ) {
         Text(
-            text = "${viewModel.weatherData?.main?.temp?.toInt()?:""}°",
+            text = "${viewModel.weatherData?.main?.temp?.toInt() ?: ""}°",
             fontFamily = poppins,
             fontWeight = FontWeight.Light,
             color = Violet,
             fontSize = 100.sp,
         )
 
-        CoilImage(imageModel = "${BuildConfig.IMAGE_URL}/img/wn/${viewModel.weatherData!!.weather[0].icon}@4x.png", modifier = Modifier
-            .size(100.dp)
-            .align(Alignment.Top),
+        CoilImage(
+            imageModel = "${BuildConfig.IMAGE_URL}/img/wn/${viewModel.weatherData!!.weather[0].icon}@4x.png",
+            modifier = Modifier
+                .size(100.dp)
+                .align(Alignment.Top),
         )
     }
 }
