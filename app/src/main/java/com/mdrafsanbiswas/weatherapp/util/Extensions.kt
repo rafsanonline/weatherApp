@@ -79,3 +79,35 @@ fun Context.hideProgressBar() = run {
 
 fun Context.showToast(text: String, time: Int = Toast.LENGTH_SHORT) =
     Toast.makeText(this, text, time).show()
+
+fun Int?.formatDate(): String {
+    return try {
+        val timestamp = this?.toLong() ?: return "Invalid Timestamp"
+        val date = Date(timestamp * 1000L)
+        val sdf = SimpleDateFormat("EEEE, d'${date.getDayOfMonthSuffix(date.day)}' MMMM", Locale.getDefault())
+        sdf.format(date)
+    } catch (e: Exception) {
+        "Invalid Date"
+    }
+}
+
+fun Date.getDayOfMonthSuffix(n: Int): String {
+    return when {
+        n in 11..13 -> "th"
+        n % 10 == 1 -> "st"
+        n % 10 == 2 -> "nd"
+        n % 10 == 3 -> "rd"
+        else -> "th"
+    }
+}
+
+fun Int?.formatDateAMPM(): String {
+    return try {
+        val timestamp = this?.toLong() ?: return "Invalid Timestamp"
+        val date = Date(timestamp * 1000L)
+        val sdf = SimpleDateFormat("h:mm a", Locale.getDefault())
+        sdf.format(date)
+    } catch (e: Exception) {
+        "Invalid DateTime"
+    }
+}

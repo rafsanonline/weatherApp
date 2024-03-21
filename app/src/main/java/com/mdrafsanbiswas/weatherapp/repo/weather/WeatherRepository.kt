@@ -20,7 +20,8 @@ class WeatherRepository @Inject constructor(
             apiService.getRequest("data/2.5/weather", mapOf(
                 "appid" to BuildConfig.API_KEY,
                 "lat" to lat,
-                "lon" to lon
+                "lon" to lon,
+                "units" to "metric"
             )).convertData(WeatherDataResponse::class) as WeatherDataResponse
         }
     }
@@ -29,7 +30,8 @@ class WeatherRepository @Inject constructor(
         return NetworkCallHandler.handleNetworkCall {
             apiService.getRequest("data/2.5/weather", mapOf(
                 "appid" to BuildConfig.API_KEY,
-                "q" to city
+                "q" to city,
+                "units" to "metric"
             )).convertData(WeatherDataResponse::class) as WeatherDataResponse
         }
     }

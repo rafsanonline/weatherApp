@@ -63,11 +63,13 @@ android {
         demo {
             dimension "version"
             buildConfigField "String", "SERVER_URL", '"https://api.openweathermap.org/"'
+            buildConfigField "String", "IMAGE_URL", '"https://openweathermap.org/"'
             buildConfigField "String", "API_KEY", properties.getProperty("API_KEY", "")
         }
         production {
             dimension "version"
             buildConfigField "String", "SERVER_URL", '"https://api.openweathermap.org/"'
+            buildConfigField "String", "IMAGE_URL", '"https://openweathermap.org/"'
             buildConfigField "String", "API_KEY", properties.getProperty("API_KEY", "")
         }
     }
