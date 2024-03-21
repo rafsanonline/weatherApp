@@ -5,6 +5,7 @@ import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
 import com.mdrafsanbiswas.weatherapp.ui.base.BaseActivity
+import com.mdrafsanbiswas.weatherapp.ui.screens.WeatherHomeScreen
 import com.mdrafsanbiswas.weatherapp.util.network_connectivity.ConnectionState
 import com.mdrafsanbiswas.weatherapp.util.observeConnectivityAsFlow
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,7 +22,7 @@ class MainActivity : BaseActivity() {
         checkNetworkConnection()
 
         setContent {
-
+            WeatherHomeScreen(mainViewModel)
         }
     }
 

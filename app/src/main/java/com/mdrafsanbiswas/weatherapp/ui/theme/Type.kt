@@ -33,7 +33,7 @@ val CustomTypography = Typography(
     ),
 
     button = TextStyle(
-        fontFamily = FontFamily.Default,
+        fontFamily = poppins,
         fontWeight = FontWeight.W500,
         fontSize = 20.sp
     ),
