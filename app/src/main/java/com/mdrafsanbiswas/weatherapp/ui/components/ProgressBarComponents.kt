@@ -8,6 +8,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.mdrafsanbiswas.weatherapp.ui.theme.Violet
 
 @Composable
 fun ProgressBarHandler(show: Boolean) {
@@ -19,7 +20,7 @@ fun ProgressBarHandler(show: Boolean) {
         contentAlignment = Alignment.Center
     ) {
         CircularProgressIndicator(
-            color = MaterialTheme.colors.primary,
+            color = Violet,
             modifier = Modifier
                 .wrapContentHeight()
                 .align(Alignment.Center)

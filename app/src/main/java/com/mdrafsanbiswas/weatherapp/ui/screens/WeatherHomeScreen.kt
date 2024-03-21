@@ -1,5 +1,7 @@
 package com.mdrafsanbiswas.weatherapp.ui.screens
 
+import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -19,16 +21,23 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.WaterDrop
 import androidx.compose.material.icons.rounded.WbCloudy
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mdrafsanbiswas.weatherapp.R
+import com.mdrafsanbiswas.weatherapp.ui.components.ProgressBarHandler
 import com.mdrafsanbiswas.weatherapp.ui.main.MainViewModel
 import com.mdrafsanbiswas.weatherapp.ui.theme.Violet
 import com.mdrafsanbiswas.weatherapp.ui.theme.poppins
@@ -37,6 +46,10 @@ import com.mdrafsanbiswas.weatherapp.ui.theme.poppins
 fun WeatherHomeScreen(
     viewModel: MainViewModel
 ) {
+    LaunchedEffect(key1 = Unit, block = {
+        viewModel.fetchWeatherData("23", "90")
+    })
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -45,28 +58,31 @@ fun WeatherHomeScreen(
     ) {
         SearchCard(
             onSearchClick = {
-                // TODO CALL SEARCH API
+
             }
         )
 
-        Spacer(modifier = Modifier.height(45.dp))
-        TemperatureDetails(viewModel)
-        Spacer(modifier = Modifier.height(10.dp))
-        TemperatureCard(viewModel)
+        if(viewModel.weatherData != null) {
+            Spacer(modifier = Modifier.height(45.dp))
+            TemperatureDetails(viewModel)
+            Spacer(modifier = Modifier.height(10.dp))
+            TemperatureCard(viewModel)
 
-        Text(
-            text = "Cloudy",
-            fontFamily = poppins,
-            fontWeight = FontWeight.Normal,
-            color = Violet,
-            fontSize = 17.sp,
-            modifier = Modifier.align(Alignment.CenterHorizontally)
-        )
+            Text(
+                text = "Cloudy",
+                fontFamily = poppins,
+                fontWeight = FontWeight.Normal,
+                color = Violet,
+                fontSize = 17.sp,
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            )
 
-        Spacer(modifier = Modifier.height(30.dp))
+            Spacer(modifier = Modifier.height(30.dp))
 
-        OtherDetails(viewModel)
-
+            OtherDetails(viewModel)
+        } else {
+            ProgressBarHandler(true)
+        }
     }
 }
 
@@ -92,7 +108,7 @@ fun OtherDetails(viewModel: MainViewModel) {
             Spacer(modifier = Modifier.width(5.dp))
 
             Text(
-                text = "Sunrise",
+                text = stringResource(R.string.sunrise),
                 fontFamily = poppins,
                 fontWeight = FontWeight.Normal,
                 color = Violet,
@@ -130,7 +146,7 @@ fun OtherDetails(viewModel: MainViewModel) {
             Spacer(modifier = Modifier.width(5.dp))
 
             Text(
-                text = "Sunset",
+                text = stringResource(R.string.sunset),
                 fontFamily = poppins,
                 fontWeight = FontWeight.Normal,
                 color = Violet,
@@ -168,7 +184,7 @@ fun OtherDetails(viewModel: MainViewModel) {
             Spacer(modifier = Modifier.width(5.dp))
 
             Text(
-                text = "Humidity",
+                text = stringResource(R.string.humidity),
                 fontFamily = poppins,
                 fontWeight = FontWeight.Normal,
                 color = Violet,
@@ -206,7 +222,7 @@ fun OtherDetails(viewModel: MainViewModel) {
             Spacer(modifier = Modifier.width(5.dp))
 
             Text(
-                text = "Clouds",
+                text = stringResource(R.string.clouds),
                 fontFamily = poppins,
                 fontWeight = FontWeight.Normal,
                 color = Violet,
