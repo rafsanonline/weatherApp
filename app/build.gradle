@@ -1,0 +1,185 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'kotlin-parcelize'
+    id 'dagger.hilt.android.plugin'
+    id 'com.google.devtools.ksp' version '1.7.0-1.0.6'
+}
+
+android {
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.mdrafsanbiswas.weatherapp"
+        minSdk 21
+        targetSdk 33
+        versionCode 1
+        versionName "1.0.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables {
+            useSupportLibrary true
+        }
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+        }
+
+        release {
+          /*  minifyEnabled true
+            shrinkResources true*/
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    bundle {
+        language {
+            enableSplit = false
+        }
+    }
+
+    applicationVariants.configureEach { variant ->
+        kotlin.sourceSets {
+            getByName(variant.name) {
+                kotlin.srcDir("build/generated/ksp/${variant.name}/kotlin")
+            }
+        }
+
+        variant.outputs.all {
+            outputFileName = "WeatherApp-v${variant.versionCode}-${variant.versionName}-${new Date().format('ddMMyy_HHmm')}-${variant.buildType.name}-${variant.flavorName}.apk"
+        }
+    }
+
+    Properties properties = new Properties()
+    if (project.rootProject.file('local.properties').canRead()) {
+        properties.load(project.rootProject.file("local.properties").newDataInputStream())
+    }
+
+    flavorDimensions "version"
+    productFlavors {
+        demo {
+            dimension "version"
+            buildConfigField "String", "SERVER_URL", '"https://api.openweathermap.org/"'
+            buildConfigField "String", "API_KEY", properties.getProperty("API_KEY", "")
+        }
+        production {
+            dimension "version"
+            buildConfigField "String", "SERVER_URL", '"https://api.openweathermap.org/"'
+            buildConfigField "String", "API_KEY", properties.getProperty("API_KEY", "")
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+
+    buildFeatures {
+        compose true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion compose_version
+    }
+
+    packagingOptions {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
+    }
+}
+
+dependencies {
+    implementation "androidx.appcompat:appcompat:1.6.1"
+    implementation 'androidx.core:core-ktx:1.12.0'
+    implementation "androidx.compose.ui:ui:$compose_version"
+    implementation "androidx.compose.material:material:$compose_version"
+    implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.2'
+    implementation 'androidx.activity:activity-compose:1.8.0'
+    implementation 'com.google.android.material:material:1.10.0'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
+    debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
+    debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
+    implementation "androidx.compose.material:material-icons-extended:$compose_version"
+
+    // viewmodel
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2'
+
+    //Permissions
+    implementation "com.google.accompanist:accompanist-permissions:0.19.0"
+
+    // navigation-compose
+    def nav_version = "2.7.4"
+    implementation "androidx.navigation:navigation-compose:$nav_version"
+
+    // hilt
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-compiler:$hilt_version"
+    implementation 'androidx.hilt:hilt-work:1.0.0'
+    implementation 'androidx.hilt:hilt-navigation-compose:1.0.0'
+
+    // Retrofit
+    def retrofit_version = "2.9.0"
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+
+    // okhttp3
+    def okHttp3_version = "4.9.3"
+    implementation "com.squareup.okhttp3:okhttp:$okHttp3_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okHttp3_version"
+
+    // coroutines
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1'
+
+    // paging
+    implementation "androidx.paging:paging-runtime:3.2.1"
+    implementation "androidx.paging:paging-compose:3.3.0-alpha02"
+
+    // glide
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
+
+    // compose destination
+    def compose_destination_version = "1.5.9-beta"
+    implementation "io.github.raamcosta.compose-destinations:core:$compose_destination_version"
+    ksp "io.github.raamcosta.compose-destinations:ksp:$compose_destination_version"
+
+    // coil
+    implementation "io.coil-kt:coil-compose:2.1.0"
+
+    // lottie
+    implementation 'com.airbnb.android:lottie-compose:5.2.0'
+
+    // pager
+    implementation "com.google.accompanist:accompanist-pager:0.13.0"
+    implementation "com.google.accompanist:accompanist-pager-indicators:0.13.0"
+
+    // flow layout
+    implementation 'com.google.accompanist:accompanist-flowlayout:0.26.1-alpha'
+
+    // compressor
+    implementation 'id.zelory:compressor:3.0.1'
+
+    //Image Loader
+    implementation "com.github.skydoves:landscapist-glide:1.5.2"
+    implementation "com.github.skydoves:landscapist-coil:1.5.2"
+
+    def work_version = "2.7.0"
+    implementation "androidx.work:work-runtime-ktx:$work_version"
+
+}
