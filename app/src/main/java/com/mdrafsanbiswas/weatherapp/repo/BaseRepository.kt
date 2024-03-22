@@ -23,6 +23,7 @@ abstract class BaseRepository : IBaseRepository {
                     "ok" -> {
                         emit(networkCall)
                     }
+
                     else -> {
                         throw NetworkErrorExceptions(
                             errorCode = baseData.code ?: -1,

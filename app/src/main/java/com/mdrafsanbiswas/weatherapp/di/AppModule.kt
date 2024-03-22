@@ -1,6 +1,5 @@
 package com.mdrafsanbiswas.weatherapp.di
 
-import android.content.Context
 import com.mdrafsanbiswas.weatherapp.BuildConfig
 import com.mdrafsanbiswas.weatherapp.network.IApiService
 import dagger.Module
@@ -64,5 +63,5 @@ object AppModule {
     fun provideApiService(retrofit: Retrofit): IApiService {
         return retrofit.create(IApiService::class.java)
     }
- }
+}
 

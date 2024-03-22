@@ -22,6 +22,7 @@ class MainViewModel @Inject constructor(
 
     var weatherData by mutableStateOf<WeatherDataResponse?>(null)
     var locationData by mutableStateOf<Location?>(null)
+    var initSearchValue by mutableStateOf("")
     var errorMessage = MutableLiveData("")
     suspend fun fetchWeatherData(lat: String, lon: String) =
         iWeatherRepository.fetchWeatherData(lat, lon).collectLatest {
@@ -61,6 +62,7 @@ class MainViewModel @Inject constructor(
         }
 
     fun updateLocation(lo: Location?) {
+        initSearchValue = ""
         locationData = lo
         viewModelScope.launch {
             fetchWeatherData(locationData?.latitude.toString(), locationData?.longitude.toString())

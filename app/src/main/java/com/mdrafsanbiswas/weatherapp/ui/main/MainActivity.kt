@@ -23,7 +23,6 @@ import com.mdrafsanbiswas.weatherapp.ui.base.BaseActivity
 import com.mdrafsanbiswas.weatherapp.ui.screens.WeatherHomeScreen
 import com.mdrafsanbiswas.weatherapp.util.network_connectivity.ConnectionState
 import com.mdrafsanbiswas.weatherapp.util.observeConnectivityAsFlow
-import com.mdrafsanbiswas.weatherapp.util.showProgressBar
 import com.mdrafsanbiswas.weatherapp.util.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -41,7 +40,9 @@ class MainActivity : BaseActivity() {
     private val activityResultLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
             if (permissions.values.contains(false)) {
-              showToast("Please allow location permission")
+                showToast("Please allow location permission")
+            } else {
+                startLocationUpdates()
             }
         }
 
@@ -56,6 +57,7 @@ class MainActivity : BaseActivity() {
         if (isGpsEnabled(this)) {
             setUpLocationServices()
         } else {
+            mainViewModel.showProgressBar = false
             showToast(getString(R.string.please_turn_your_gps_on))
         }
 
@@ -133,6 +135,7 @@ class MainActivity : BaseActivity() {
 
     @SuppressLint("MissingPermission")
     private fun startLocationUpdates() {
+        mainViewModel.showProgressBar = true
         locationCallback?.let {
             val locationRequest = LocationRequest.create().apply {
                 interval = 10000
@@ -144,13 +147,6 @@ class MainActivity : BaseActivity() {
                 it,
                 Looper.getMainLooper()
             )
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        if (locationRequired) {
-            startLocationUpdates()
         }
     }
 

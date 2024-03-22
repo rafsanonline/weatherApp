@@ -19,10 +19,6 @@ import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,16 +29,14 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mdrafsanbiswas.weatherapp.R
+import com.mdrafsanbiswas.weatherapp.ui.main.MainViewModel
 import com.mdrafsanbiswas.weatherapp.ui.theme.Snow
 import com.mdrafsanbiswas.weatherapp.ui.theme.Violet
 import com.mdrafsanbiswas.weatherapp.ui.theme.poppins
 
 @Composable
-fun SearchCard(onSearchClick: (String) -> Unit) {
+fun SearchCard(mainViewModel: MainViewModel, onSearchClick: (String) -> Unit) {
 
-    var searchText by remember {
-        mutableStateOf("")
-    }
 
     Row(
         Modifier
@@ -56,15 +50,16 @@ fun SearchCard(onSearchClick: (String) -> Unit) {
                 .background(color = Snow.copy(.6f), shape = RoundedCornerShape(12.dp))
         ) {
             TextField(
-                value = searchText,
+                value = mainViewModel.initSearchValue,
                 onValueChange = {
-                    searchText = it
+                    mainViewModel.initSearchValue = it
                 },
+                maxLines = 1,
                 modifier = Modifier
                     .align(Alignment.Center),
                 placeholder = {
                     Text(
-                        text = stringResource(R.string.search_by_city_country),
+                        text = stringResource(R.string.search_by_city_state),
                         fontFamily = poppins,
                         fontSize = 15.sp,
                         fontWeight = FontWeight.Light,
@@ -96,7 +91,7 @@ fun SearchCard(onSearchClick: (String) -> Unit) {
                 .padding(10.dp)
                 .align(Alignment.CenterVertically)
                 .clickable {
-                    onSearchClick(searchText)
+                    onSearchClick(mainViewModel.initSearchValue)
                 }
         )
     }

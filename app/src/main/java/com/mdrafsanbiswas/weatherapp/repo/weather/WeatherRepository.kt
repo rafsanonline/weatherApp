@@ -1,4 +1,5 @@
 package com.mdrafsanbiswas.weatherapp.repo.weather
+
 import com.mdrafsanbiswas.weatherapp.BuildConfig
 import com.mdrafsanbiswas.weatherapp.network.AppNetworkState
 import com.mdrafsanbiswas.weatherapp.network.IApiService
@@ -17,22 +18,26 @@ class WeatherRepository @Inject constructor(
         lon: String
     ): Flow<AppNetworkState<WeatherDataResponse>> {
         return NetworkCallHandler.handleNetworkCall {
-            apiService.getRequest("data/2.5/weather", mapOf(
-                "appid" to BuildConfig.API_KEY,
-                "lat" to lat,
-                "lon" to lon,
-                "units" to "metric"
-            )).convertData(WeatherDataResponse::class) as WeatherDataResponse
+            apiService.getRequest(
+                "data/2.5/weather", mapOf(
+                    "appid" to BuildConfig.API_KEY,
+                    "lat" to lat,
+                    "lon" to lon,
+                    "units" to "metric"
+                )
+            ).convertData(WeatherDataResponse::class) as WeatherDataResponse
         }
     }
 
     override suspend fun fetchWeatherDataByCity(city: String): Flow<AppNetworkState<WeatherDataResponse>> {
         return NetworkCallHandler.handleNetworkCall {
-            apiService.getRequest("data/2.5/weather", mapOf(
-                "appid" to BuildConfig.API_KEY,
-                "q" to city,
-                "units" to "metric"
-            )).convertData(WeatherDataResponse::class) as WeatherDataResponse
+            apiService.getRequest(
+                "data/2.5/weather", mapOf(
+                    "appid" to BuildConfig.API_KEY,
+                    "q" to city,
+                    "units" to "metric"
+                )
+            ).convertData(WeatherDataResponse::class) as WeatherDataResponse
         }
     }
 

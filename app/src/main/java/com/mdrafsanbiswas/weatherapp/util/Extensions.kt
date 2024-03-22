@@ -11,7 +11,8 @@ import com.mdrafsanbiswas.weatherapp.util.network_connectivity.ConnectionState
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 
 val Context.currentConnectivityState: ConnectionState
     get() {
@@ -84,7 +85,10 @@ fun Int?.formatDate(): String {
     return try {
         val timestamp = this?.toLong() ?: return "Invalid Timestamp"
         val date = Date(timestamp * 1000L)
-        val sdf = SimpleDateFormat("EEEE, d'${date.getDayOfMonthSuffix(date.day)}' MMMM", Locale.getDefault())
+        val sdf = SimpleDateFormat(
+            "EEEE, d'${date.getDayOfMonthSuffix(date.day)}' MMMM",
+            Locale.getDefault()
+        )
         sdf.format(date)
     } catch (e: Exception) {
         "Invalid Date"

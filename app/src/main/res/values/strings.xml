@@ -4,7 +4,7 @@
     <string name="sunrise">Sunrise</string>
     <string name="humidity">Humidity</string>
     <string name="clouds">Clouds</string>
-    <string name="search_by_city_country">Search by city, country</string>
+    <string name="search_by_city_state">Search by city, state</string>
     <string name="please_turn_your_gps_on">Please turn your GPS on!</string>
     <string name="connection_available">Connection Available</string>
     <string name="no_internet_connection">No internet connection</string>

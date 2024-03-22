@@ -1,4 +1,5 @@
 package com.mdrafsanbiswas.weatherapp.di
+
 import com.mdrafsanbiswas.weatherapp.repo.weather.IWeatherRepository
 import com.mdrafsanbiswas.weatherapp.repo.weather.WeatherRepository
 import dagger.Binds

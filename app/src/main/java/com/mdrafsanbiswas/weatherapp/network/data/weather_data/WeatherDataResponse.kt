@@ -31,4 +31,4 @@ data class WeatherDataResponse(
     val weather: List<Weather>,
     @SerializedName("wind")
     val wind: Wind
-): BaseResponse()
+) : BaseResponse()

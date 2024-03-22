@@ -67,6 +67,7 @@ fun Exception.resolveError(): AppNetworkState.Error {
                 unauthorized = exception.unauthorized
             )
         }
+
         is ConnectException -> {
             val exception = NetworkErrorExceptions(errorMessage = "no internet access!")
             return AppNetworkState.Error(
@@ -75,6 +76,7 @@ fun Exception.resolveError(): AppNetworkState.Error {
                 unauthorized = exception.unauthorized
             )
         }
+
         is UnknownHostException -> {
             val exception = NetworkErrorExceptions(errorMessage = "host not found!")
             return AppNetworkState.Error(
@@ -83,6 +85,7 @@ fun Exception.resolveError(): AppNetworkState.Error {
                 unauthorized = exception.unauthorized
             )
         }
+
         is HttpException -> {
             val exception = NetworkErrorExceptions.parseException(this)
             return AppNetworkState.Error(
@@ -91,6 +94,7 @@ fun Exception.resolveError(): AppNetworkState.Error {
                 unauthorized = exception.unauthorized
             )
         }
+
         is NetworkErrorExceptions -> {
             return AppNetworkState.Error(
                 exception = this,
