@@ -6,12 +6,12 @@ This is a simple application for fetching current weather data from OpenWeatherM
 ## App Structure
 I've implemented a clean architecture with the MVVM design pattern to develop this application, leveraging the latest Android Jetpack Components. The main components of the app include:
 
-Jetpack Compose
-ViewModel
-Hilt
-Flow
-Kotlin Coroutines
-Retrofit
+Jetpack Compose  
+ViewModel  
+Hilt  
+Flow  
+Kotlin Coroutines  
+Retrofit  
 
 ## Demo video/screenshot
 
